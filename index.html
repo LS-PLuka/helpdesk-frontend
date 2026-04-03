@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Helpdesk - Ideal Grupo</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- Cabeçalho com logo -->
+    <header class="header">
+      <img src="img/image.png" alt="Ideal Grupo" class="logo" />
+      <div class="header-info">
+        <span class="header-title">Sistema de Chamados</span>
+        <span class="header-sub">Helpdesk API</span>
+      </div>
+    </header>
+
+    <!-- Navegação por abas -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="abrir">Abrir Chamado</button>
+      <button class="tab" data-tab="listar">Listar Chamados</button>
+      <button class="tab" data-tab="buscar">Buscar por ID</button>
+      <button class="tab" data-tab="deletar">Deletar Chamado</button>
+    </nav>
+
+    <!-- Conteúdo das abas -->
+    <main class="content">
+
+      <!-- Aba: Abrir Chamado -->
+      <section class="tab-panel active" id="tab-abrir">
+        <h2 class="section-title">Abrir Novo Chamado</h2>
+        <form id="form-criar" class="form">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Título <span class="required">*</span></label>
+              <input type="text" id="titulo" placeholder="Ex: Sem acesso à VPN" />
+            </div>
+            <div class="form-group">
+              <label>Setor <span class="required">*</span></label>
+              <input type="text" id="setor" placeholder="Ex: Financeiro" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Descrição <span class="required">*</span></label>
+            <textarea id="descricao" rows="3" placeholder="Descreva o problema em detalhes..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Categoria <span class="required">*</span></label>
+              <select id="categoria">
+                <option value="">Selecione...</option>
+                <option value="REDE">Rede</option>
+                <option value="HARDWARE">Hardware</option>
+                <option value="SOFTWARE">Software</option>
+                <option value="ACESSO">Acesso</option>
+                <option value="IMPRESSORA">Impressora</option>
+                <option value="OUTRO">Outro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Colaborador</label>
+              <input type="text" id="colaborador" placeholder="Nome do colaborador" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>E-mail do Colaborador</label>
+              <input type="email" id="emailColaborador" placeholder="email@empresa.com" />
+            </div>
+            <div class="form-group">
+              <label>Solução</label>
+              <input type="text" id="solucao" placeholder="Solução aplicada (se houver)" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Observação</label>
+            <textarea id="observacao" rows="2" placeholder="Observações adicionais..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Abrir Chamado</button>
+        </form>
+      </section>
+
+      <!-- Aba: Listar Chamados -->
+      <section class="tab-panel" id="tab-listar">
+        <div class="section-header">
+          <h2 class="section-title">Chamados Registrados</h2>
+          <button class="btn btn-primary" id="btn-listar">Atualizar Lista</button>
+        </div>
+        <div id="lista-chamados" class="lista"></div>
+      </section>
+
+      <!-- Aba: Buscar por ID -->
+      <section class="tab-panel" id="tab-buscar">
+        <h2 class="section-title">Buscar Chamado</h2>
+        <div class="search-bar">
+          <input type="number" id="busca-id" placeholder="Digite o ID do chamado..." min="1" />
+          <button class="btn btn-primary" id="btn-buscar">Buscar</button>
+        </div>
+        <div id="resultado-busca" class="lista"></div>
+      </section>
+
+      <!-- Aba: Deletar Chamado -->
+      <section class="tab-panel" id="tab-deletar">
+        <h2 class="section-title">Deletar Chamado</h2>
+        <div class="search-bar">
+          <input type="number" id="deletar-id" placeholder="Digite o ID do chamado..." min="1" />
+          <button class="btn btn-danger" id="btn-deletar">Deletar</button>
+        </div>
+        <div id="resultado-deletar" class="lista"></div>
+      </section>
+
+    </main>
+
+    <!-- Área de resposta da API -->
+    <div class="response-area" id="response-area" style="display:none;">
+      <div class="response-header">
+        <span class="response-label">Resposta da API</span>
+        <button class="btn-close" id="btn-fechar-resposta">✕</button>
+      </div>
+      <pre id="response-content"></pre>
+    </div>
+
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
