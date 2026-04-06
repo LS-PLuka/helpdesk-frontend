@@ -1,5 +1,5 @@
 // =============================================
-// HELPDESK — iDeal Grupo
+// HELPDESK — Ideal Grupo
 // Integração com a API REST (Spring Boot)
 // Base URL da API
 // =============================================
@@ -58,10 +58,20 @@ function renderChamado(c) {
       </div>
       <div class="chamado-descricao">${c.descricao}</div>
       <div class="chamado-extra">
-        ${c.setor   ? `<span>📍 ${c.setor}</span>`          : ""}
-        ${c.colaborador    ? `<span>👤 ${c.colaborador}</span>`     : ""}
-        ${c.emailColaborador ? `<span>✉ ${c.emailColaborador}</span>` : ""}
-        ${c.solucao ? `<span>✅ Solução: ${c.solucao}</span>` : ""}
+        ${c.setor            ? `<span>📍 ${c.setor}</span>`             : ""}
+        ${c.colaborador      ? `<span>👤 ${c.colaborador}</span>`       : ""}
+        ${c.emailColaborador ? `<span>✉ ${c.emailColaborador}</span>`   : ""}
+        ${c.solucao          ? `<span>✅ Solução: ${c.solucao}</span>`  : ""}
+      </div>
+      <div class="status-update">
+        <select class="status-select" data-id="${c.id}">
+          <option value="ABERTO"       ${c.status === "ABERTO"       ? "selected" : ""}>Aberto</option>
+          <option value="EM_ANDAMENTO" ${c.status === "EM_ANDAMENTO" ? "selected" : ""}>Em Andamento</option>
+          <option value="RESOLVIDO"    ${c.status === "RESOLVIDO"    ? "selected" : ""}>Resolvido</option>
+        </select>
+        <button class="btn btn-primary btn-sm" onclick="atualizarStatus(${c.id}, this)">
+          Atualizar Status
+        </button>
       </div>
     </div>
   `;
@@ -227,3 +237,36 @@ document.querySelector('[data-tab="listar"]').addEventListener("click", () => {
   // Dispara o botão de listar automaticamente ao abrir a aba
   setTimeout(() => document.getElementById("btn-listar").click(), 100);
 });
+
+// 
+
+// =============================================
+// Atualiza status via PATCH /api/chamados/{id}/status
+// =============================================
+
+async function atualizarStatus(id, btn) {
+  const card = btn.closest(".chamado-card");
+  const select = card.querySelector(".status-select");
+  const novoStatus = select.value;
+
+  try {
+    const res = await fetch(`${API_BASE}/${id}/status`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: novoStatus })
+    });
+
+    const dados = await res.json();
+    exibirResposta(dados);
+
+    if (res.ok) {
+      alert(`✅ Status do chamado #${id} atualizado para ${novoStatus.replace("_", " ")}!`);
+      document.getElementById("btn-listar").click();
+    } else {
+      alert("❌ Erro ao atualizar status.");
+    }
+  } catch (err) {
+    exibirResposta({ erro: err.message });
+    alert("❌ Erro de conexão com a API.");
+  }
+}
